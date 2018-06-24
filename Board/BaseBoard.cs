@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Board
 {
@@ -11,12 +12,12 @@ namespace Board
         /// <summary>
         /// 棋盘X轴
         /// </summary>
-        protected int boardX { get; set; }
+        public int boardX { get; set; }
 
         /// <summary>
         /// 棋盘Y轴
         /// </summary>
-        protected int boardY { get; set; }
+        public int boardY { get; set; }
 
         /// <summary>
         /// 间隙
@@ -26,17 +27,27 @@ namespace Board
         /// <summary>
         /// 棋盘基准坐标X
         /// </summary>
-        protected int initialPixelX { get; set; }
+        protected int initialPixelx { get; set; }
 
         /// <summary>
         /// 棋盘基准坐标Y
         /// </summary>
-        protected int initialPixelY { get; set; }
+        protected int initialPixely { get; set; }
+
+        /// <summary>
+        /// 棋盘颜色
+        /// </summary>
+        public Color mainColor { get; set; }
+
+        /// <summary>
+        /// 棋盘背景颜色
+        /// </summary>
+        public Color bgColor { get; set; }
 
         /// <summary>
         /// 棋盘点位状态
         /// </summary>
-        protected pieceType[,] state;
+        protected pieceType[,] state { get; set; }
 
         /// <summary>
         /// 棋盘点位状态类型
@@ -57,6 +68,19 @@ namespace Board
             /// 白
             /// </summary>
             White,
+        }
+
+        /// <summary>
+        /// 获得点的具体坐标
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <returns></returns>
+        public Point GetPoint(int X, int Y)
+        {
+            int x = this.initialPixelx + X * this.gapPixel;
+            int y = this.initialPixely + Y * this.gapPixel;
+            return new Point(x, y);
         }
     }
 }

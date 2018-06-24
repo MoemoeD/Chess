@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Board
 {
@@ -15,8 +16,10 @@ namespace Board
             this.boardX = 19;
             this.boardY = 19;
             this.gapPixel = 40;
-            this.initialPixelX = 100;
-            this.initialPixelY = 100;
+            this.initialPixelx = 100;
+            this.initialPixely = 80;
+            this.mainColor = Color.Black;
+            this.bgColor = Color.White;
             this.state = new pieceType[this.boardX, this.boardY];
         }
 
