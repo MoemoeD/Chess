@@ -22,17 +22,17 @@ namespace Board
         /// <summary>
         /// 间隙
         /// </summary>
-        protected int gapPixel { get; set; }
+        public int gapPixel { get; set; }
 
         /// <summary>
         /// 棋盘基准坐标X
         /// </summary>
-        protected int initialPixelx { get; set; }
+        public int initialPixelx { get; set; }
 
         /// <summary>
         /// 棋盘基准坐标Y
         /// </summary>
-        protected int initialPixely { get; set; }
+        public int initialPixely { get; set; }
 
         /// <summary>
         /// 棋盘颜色
@@ -47,12 +47,12 @@ namespace Board
         /// <summary>
         /// 棋盘点位状态
         /// </summary>
-        protected pieceType[,] state { get; set; }
+        protected boardType[,] state { get; set; }
 
         /// <summary>
         /// 棋盘点位状态类型
         /// </summary>
-        public enum pieceType
+        public enum boardType
         {
             /// <summary>
             /// 空

@@ -40,6 +40,18 @@ namespace Chess
                 Point b = board.GetPoint(board.boardX - 1, i);
                 graphics.DrawLine(pen, a, b);
             }
+
+            graphics.Dispose();
+        }
+
+        private void Main_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            GobangPiece piece = new GobangPiece(e.X, e.Y);
         }
     }
 }

@@ -38,6 +38,7 @@
             this.Name = "Main";
             this.Text = "Main";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Main_Paint);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Main_MouseClick);
             this.ResumeLayout(false);
 
         }

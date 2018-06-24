@@ -20,7 +20,7 @@ namespace Board
             this.initialPixely = 80;
             this.mainColor = Color.Black;
             this.bgColor = Color.White;
-            this.state = new pieceType[this.boardX, this.boardY];
+            this.state = new boardType[this.boardX, this.boardY];
         }
 
         public static GobangBoard Instance()
