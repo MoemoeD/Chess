@@ -50,6 +50,11 @@ namespace Board
         protected boardType[,] state { get; set; }
 
         /// <summary>
+        /// 棋谱
+        /// </summary>
+        protected List<boardType[,]> records { get; set; }
+
+        /// <summary>
         /// 棋盘点位状态类型
         /// </summary>
         public enum boardType

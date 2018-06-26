@@ -17,6 +17,7 @@ namespace Piece
             this.pieceRadius = 15;
             this.judgeRadius = 15;
 
+            //判断是否点击在规定范围内
             if (!ConvertxyToXY(x, y))
             {
                 return;
@@ -29,6 +30,11 @@ namespace Piece
             else if (lastState == pieceType.Black)
             {
                 this.state = pieceType.White;
+            }
+
+            if (!gobangBoard.SetState(new Point(this.pieceX, this.pieceY), (GobangBoard.boardType)Enum.Parse(typeof(GobangBoard.boardType), Enum.GetName(typeof(pieceType), this.state))))
+            {
+                return;
             }
 
             lastState = this.state;
