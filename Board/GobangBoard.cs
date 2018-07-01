@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
+using System.Windows.Forms;
 
 namespace Board
 {
@@ -17,7 +18,7 @@ namespace Board
             this.boardY = 19;
             this.gapPixel = 40;
             this.initialPixelx = 100;
-            this.initialPixely = 80;
+            this.initialPixely = 50;
             this.mainColor = Color.Black;
             this.bgColor = Color.White;
             this.state = new boardType[this.boardX, this.boardY];
@@ -43,10 +44,37 @@ namespace Board
             }
 
             this.state[p.X, p.Y] = bt;
-            boardType[,] _state = this.state;
-            this.records.Add(_state);
+            boardType[,] s = this.state;
+            this.records.Add(s);
 
             return true;
+        }
+
+        /// <summary>
+        /// 绘制棋盘
+        /// </summary>
+        /// <param name="form"></param>
+        public void DrawBoard(Form form)
+        {
+            Pen pen = new Pen(this.mainColor);
+
+            Graphics graphics = form.CreateGraphics();
+            graphics.Clear(this.bgColor);
+
+            for (int i = 0; i < this.boardX; i++)
+            {
+                Point a = this.GetPoint(i, 0);
+                Point b = this.GetPoint(i, this.boardY - 1);
+                graphics.DrawLine(pen, a, b);
+            }
+            for (int i = 0; i < this.boardY; i++)
+            {
+                Point a = this.GetPoint(0, i);
+                Point b = this.GetPoint(this.boardX - 1, i);
+                graphics.DrawLine(pen, a, b);
+            }
+
+            graphics.Dispose();
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 
 namespace Board
 {
@@ -37,12 +37,12 @@ namespace Board
         /// <summary>
         /// 棋盘颜色
         /// </summary>
-        public Color mainColor { get; set; }
+        protected Color mainColor { get; set; }
 
         /// <summary>
         /// 棋盘背景颜色
         /// </summary>
-        public Color bgColor { get; set; }
+        protected Color bgColor { get; set; }
 
         /// <summary>
         /// 棋盘点位状态

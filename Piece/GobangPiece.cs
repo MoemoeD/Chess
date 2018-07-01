@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Board;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
-using Board;
+using System.Windows.Forms;
 
 namespace Piece
 {
@@ -65,11 +66,13 @@ namespace Piece
             int remainderx = (x - gobangBoard.initialPixelx + gobangBoard.gapPixel / 2) % gobangBoard.gapPixel;
             int remaindery = (y - gobangBoard.initialPixely + gobangBoard.gapPixel / 2) % gobangBoard.gapPixel;
 
+            //超出边界
             if (X >= gobangBoard.boardX || Y >= gobangBoard.boardY || remainderx < 0 || remaindery < 0)
             {
                 return false;
             }
 
+            //超出半径
             Point point = gobangBoard.GetPoint(X, Y);
             if (Math.Pow(point.X - x, 2) + Math.Pow(point.Y - y, 2) > Math.Pow(this.judgeRadius, 2))
             {
@@ -79,6 +82,24 @@ namespace Piece
             this.pieceX = X;
             this.pieceY = Y;
             return true;
+        }
+
+        /// <summary>
+        /// 绘制
+        /// </summary>
+        public void Draw(Form form)
+        {
+            gobangBoard.DrawBoard(form);
+            this.DrawPiece(form);
+        }
+
+        /// <summary>
+        /// 绘制棋子
+        /// </summary>
+        /// <param name="form"></param>
+        private void DrawPiece(Form form)
+        {
+
         }
     }
 }
