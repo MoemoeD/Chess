@@ -13,13 +13,15 @@ namespace Piece
     {
         GobangBoard gobangBoard = GobangBoard.Instance();
 
-        public GobangPiece(int x, int y)
+        public GobangPiece(int pixelx, int pixely)
         {
             this.pieceRadius = 15;
             this.judgeRadius = 15;
+            this.pieceMainColor = Color.Black;
+            this.pieceBgColor = Color.White;
 
             //判断是否点击在规定范围内
-            if (!ConvertxyToXY(x, y))
+            if (!ConvertxyToXY(pixelx, pixely))
             {
                 return;
             }
@@ -33,13 +35,24 @@ namespace Piece
                 this.state = pieceType.White;
             }
 
-            if (!gobangBoard.SetState(new Point(this.pieceX, this.pieceY), (GobangBoard.boardType)Enum.Parse(typeof(GobangBoard.boardType), Enum.GetName(typeof(pieceType), this.state))))
+            if (!gobangBoard.SetState(new Point(this.pieceX, this.pieceY), Enum.GetName(typeof(pieceType), this.state)))
             {
+                this.state = null;
                 return;
             }
 
             lastState = this.state;
         }
+
+        /// <summary>
+        /// 棋子颜色
+        /// </summary>
+        private Color pieceMainColor { get; set; }
+
+        /// <summary>
+        /// 棋子反色
+        /// </summary>
+        private Color pieceBgColor { get; set; }
 
         /// <summary>
         /// 棋子半径
@@ -54,52 +67,54 @@ namespace Piece
         /// <summary>
         /// 点击坐标转换为棋盘坐标
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="pixelx"></param>
+        /// <param name="pixely"></param>
         /// <returns></returns>
-        private bool ConvertxyToXY(int x, int y)
+        private bool ConvertxyToXY(int pixelx, int pixely)
         {
-            //xy减去基准坐标加上半个间隙除以间隙得到XY
-            int X = (x - gobangBoard.initialPixelx + gobangBoard.gapPixel / 2) / gobangBoard.gapPixel;
-            int Y = (y - gobangBoard.initialPixely + gobangBoard.gapPixel / 2) / gobangBoard.gapPixel;
-
-            int remainderx = (x - gobangBoard.initialPixelx + gobangBoard.gapPixel / 2) % gobangBoard.gapPixel;
-            int remaindery = (y - gobangBoard.initialPixely + gobangBoard.gapPixel / 2) % gobangBoard.gapPixel;
-
-            //超出边界
-            if (X >= gobangBoard.boardX || Y >= gobangBoard.boardY || remainderx < 0 || remaindery < 0)
+            Point Point;
+            if (!gobangBoard.GetBoardRangeByRealPoint(pixelx, pixely, out Point))
             {
                 return false;
             }
 
             //超出半径
-            Point point = gobangBoard.GetPoint(X, Y);
-            if (Math.Pow(point.X - x, 2) + Math.Pow(point.Y - y, 2) > Math.Pow(this.judgeRadius, 2))
+            Point point = gobangBoard.GetRealPointByBoardPoint(Point.X, Point.Y);
+            if (Math.Pow(point.X - pixelx, 2) + Math.Pow(point.Y - pixely, 2) > Math.Pow(this.judgeRadius, 2))
             {
                 return false;
             }
 
-            this.pieceX = X;
-            this.pieceY = Y;
+            this.pieceX = Point.X;
+            this.pieceY = Point.Y;
             return true;
-        }
-
-        /// <summary>
-        /// 绘制
-        /// </summary>
-        public void Draw(Form form)
-        {
-            gobangBoard.DrawBoard(form);
-            this.DrawPiece(form);
         }
 
         /// <summary>
         /// 绘制棋子
         /// </summary>
         /// <param name="form"></param>
-        private void DrawPiece(Form form)
+        public void DrawPiece(Form form)
         {
+            Graphics graphics = form.CreateGraphics();
 
+            Point point = gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY);
+
+            if (this.state == pieceType.Black)
+            {
+                SolidBrush brush = new SolidBrush(this.pieceMainColor);
+                graphics.FillEllipse(brush, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+            }
+            else if (this.state == pieceType.White)
+            {
+                SolidBrush brush = new SolidBrush(this.pieceBgColor);
+                graphics.FillEllipse(brush, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+
+                Pen pen = new Pen(this.pieceMainColor);
+                graphics.DrawEllipse(pen, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+            }
+
+            graphics.Dispose();
         }
     }
 }

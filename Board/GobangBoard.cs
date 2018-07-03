@@ -34,18 +34,25 @@ namespace Board
         /// <summary>
         /// 下棋
         /// </summary>
-        /// <param name="p"></param>
-        public bool SetState(Point p, boardType bt)
+        /// <param name="point"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public bool SetState(Point point, string type)
         {
-            //已被占用返回false
-            if (this.state[p.X, p.Y] != boardType.Blank)
+            boardType boardType;
+            if (!Enum.TryParse<boardType>(type, out boardType))
             {
                 return false;
             }
 
-            this.state[p.X, p.Y] = bt;
-            boardType[,] s = this.state;
-            this.records.Add(s);
+            //已被占用返回false
+            if (this.state[point.X, point.Y] != boardType.Blank)
+            {
+                return false;
+            }
+
+            this.state[point.X, point.Y] = boardType;
+            this.records.Add((boardType[,])this.state.Clone());
 
             return true;
         }
@@ -63,14 +70,14 @@ namespace Board
 
             for (int i = 0; i < this.boardX; i++)
             {
-                Point a = this.GetPoint(i, 0);
-                Point b = this.GetPoint(i, this.boardY - 1);
+                Point a = this.GetRealPointByBoardPoint(i, 0);
+                Point b = this.GetRealPointByBoardPoint(i, this.boardY - 1);
                 graphics.DrawLine(pen, a, b);
             }
             for (int i = 0; i < this.boardY; i++)
             {
-                Point a = this.GetPoint(0, i);
-                Point b = this.GetPoint(this.boardX - 1, i);
+                Point a = this.GetRealPointByBoardPoint(0, i);
+                Point b = this.GetRealPointByBoardPoint(this.boardX - 1, i);
                 graphics.DrawLine(pen, a, b);
             }
 

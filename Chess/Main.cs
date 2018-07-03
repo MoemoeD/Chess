@@ -33,7 +33,7 @@ namespace Chess
             }
 
             GobangPiece piece = new GobangPiece(e.X, e.Y);
-            piece.Draw(this);
+            piece.DrawPiece(this);
         }
     }
 }
