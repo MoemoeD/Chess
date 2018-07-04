@@ -31,7 +31,7 @@ namespace Piece
         /// <summary>
         /// 棋子状态类型
         /// </summary>
-        public enum pieceType
+        protected enum pieceType
         {
             /// <summary>
             /// 黑

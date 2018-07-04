@@ -96,23 +96,45 @@ namespace Piece
         /// <param name="form"></param>
         public void DrawPiece(Form form)
         {
-            Graphics graphics = form.CreateGraphics();
-
             Point point = gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY);
 
             if (this.state == pieceType.Black)
             {
-                SolidBrush brush = new SolidBrush(this.pieceMainColor);
-                graphics.FillEllipse(brush, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+                DrawSetBlack(form, point);
             }
             else if (this.state == pieceType.White)
             {
-                SolidBrush brush = new SolidBrush(this.pieceBgColor);
-                graphics.FillEllipse(brush, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
-
-                Pen pen = new Pen(this.pieceMainColor);
-                graphics.DrawEllipse(pen, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+                DrawSetWhite(form, point);
             }
+        }
+
+        /// <summary>
+        /// 绘制黑棋落子
+        /// </summary>
+        /// <param name="form"></param>
+        private void DrawSetBlack(Form form, Point point)
+        {
+            Graphics graphics = form.CreateGraphics();
+
+            SolidBrush brush = new SolidBrush(this.pieceMainColor);
+            graphics.FillEllipse(brush, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+
+            graphics.Dispose();
+        }
+
+        /// <summary>
+        /// 绘制白棋落子
+        /// </summary>
+        /// <param name="form"></param>
+        private void DrawSetWhite(Form form, Point point)
+        {
+            Graphics graphics = form.CreateGraphics();
+
+            SolidBrush brush = new SolidBrush(this.pieceBgColor);
+            graphics.FillEllipse(brush, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+
+            Pen pen = new Pen(this.pieceMainColor);
+            graphics.DrawEllipse(pen, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
 
             graphics.Dispose();
         }

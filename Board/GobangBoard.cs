@@ -37,7 +37,7 @@ namespace Board
         /// <param name="point"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public bool SetState(Point point, string type)
+        public bool SetState(Point Point, string type)
         {
             boardType boardType;
             if (!Enum.TryParse<boardType>(type, out boardType))
@@ -46,12 +46,13 @@ namespace Board
             }
 
             //已被占用返回false
-            if (this.state[point.X, point.Y] != boardType.Blank)
+            if (this.state[Point.X, Point.Y] != boardType.Blank)
             {
                 return false;
             }
 
-            this.state[point.X, point.Y] = boardType;
+            string Message = DoJudgmentLogic(Point, boardType);
+
             this.records.Add((boardType[,])this.state.Clone());
 
             return true;
@@ -82,6 +83,19 @@ namespace Board
             }
 
             graphics.Dispose();
+        }
+
+        /// <summary>
+        /// 判断逻辑
+        /// </summary>
+        /// <param name="Point"></param>
+        /// <param name="boardType"></param>
+        /// <returns></returns>
+        private string DoJudgmentLogic(Point Point, boardType boardType)
+        {
+            this.state[Point.X, Point.Y] = boardType;
+
+            return "";
         }
     }
 }
