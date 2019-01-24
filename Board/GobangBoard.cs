@@ -51,8 +51,7 @@ namespace Board
                 return false;
             }
 
-            string Message = DoJudgmentLogic(Point, boardType);
-
+            this.state[Point.X, Point.Y] = boardType;
             this.records.Add((boardType[,])this.state.Clone());
 
             return true;
@@ -88,14 +87,12 @@ namespace Board
         /// <summary>
         /// 判断逻辑
         /// </summary>
-        /// <param name="Point"></param>
-        /// <param name="boardType"></param>
+        /// <param name="message"></param>
         /// <returns></returns>
-        private string DoJudgmentLogic(Point Point, boardType boardType)
+        public bool DoJudgmentLogic(out string message)
         {
-            this.state[Point.X, Point.Y] = boardType;
-
-            return "";
+            message = records.Count().ToString();
+            return true;
         }
     }
 }
