@@ -24,12 +24,23 @@ namespace Board
             this.state = new boardType[this.boardX, this.boardY];
             this.records = new List<boardType[,]>();
             this.records.Add(new boardType[this.boardX, this.boardY]);
+            this.winLength = 5;
         }
 
         public static GobangBoard Instance()
         {
             return _gobangBoard;
         }
+
+        /// <summary>
+        /// 几子获胜
+        /// </summary>
+        private int winLength { get; set; }
+
+        /// <summary>
+        /// 获胜高亮
+        /// </summary>
+        private List<Point> winPoint { get; set; }
 
         /// <summary>
         /// 下棋
@@ -91,7 +102,42 @@ namespace Board
         /// <returns></returns>
         public bool DoJudgmentLogic(out string message)
         {
-            message = records.Count().ToString();
+            winPoint = new List<Point>();
+            //横向
+            List<Point> t = new List<Point>();
+            for (int X = 0; X < this.boardX; X++)
+            {
+                for (int Y = 0; Y < this.boardY; Y++)
+                {
+                    //横向
+                    if (X != 0 && state[X, Y] != state[X - 1, Y])
+                    {
+                        if (t.Where(o => o.Y == Y).Count() >= this.winLength)
+                        {
+                            if (state[X - 1, Y] != boardType.Blank)
+                            {
+                                winPoint.AddRange(t.Where(o => o.Y == Y));
+                            }
+                        }
+                        t.RemoveAll(o => o.Y == Y);
+                    }
+                    t.Add(new Point(X, Y));
+
+
+                }
+            }
+
+            message = "";
+            foreach (Point p in winPoint)
+            {
+                message += "X:" + p.X + ",Y:" + p.Y + ";";
+            }
+
+
+            if (message == "")
+            {
+                return false;
+            }
             return true;
         }
     }
