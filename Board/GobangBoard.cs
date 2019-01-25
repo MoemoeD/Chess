@@ -105,6 +105,12 @@ namespace Board
             winPoint = new List<Point>();
             //横向
             List<Point> t = new List<Point>();
+            //纵向
+            List<Point> p = new List<Point>();
+            //左
+            List<Point> l = new List<Point>();
+            //右
+            List<Point> r = new List<Point>();
             for (int X = 0; X < this.boardX; X++)
             {
                 for (int Y = 0; Y < this.boardY; Y++)
@@ -123,14 +129,55 @@ namespace Board
                     }
                     t.Add(new Point(X, Y));
 
+                    //纵向
+                    if (Y != 0 && state[X, Y] != state[X, Y - 1])
+                    {
+                        if (p.Where(o => o.X == X).Count() >= this.winLength)
+                        {
+                            if (state[X, Y - 1] != boardType.Blank)
+                            {
+                                winPoint.AddRange(p.Where(o => o.X == X));
+                            }
+                        }
+                        p.RemoveAll(o => o.X == X);
+                    }
+                    p.Add(new Point(X, Y));
+
+                    //左
+                    if (X != 0 && Y < this.boardY - 1 && state[X, Y] != state[X - 1, Y + 1])
+                    {
+                        if (l.Where(o => o.Y == X + Y - o.X).Count() >= this.winLength)
+                        {
+                            if (state[X - 1, Y + 1] != boardType.Blank)
+                            {
+                                winPoint.AddRange(l.Where(o => o.Y == X + Y - o.X));
+                            }
+                        }
+                        l.RemoveAll(o => o.Y == X + Y - o.X);
+                    }
+                    l.Add(new Point(X, Y));
+
+                    //右
+                    if (X != 0 && Y != 0 && state[X, Y] != state[X - 1, Y - 1])
+                    {
+                        if (l.Where(o => o.Y == Y - X + o.X).Count() >= this.winLength)
+                        {
+                            if (state[X - 1, Y - 1] != boardType.Blank)
+                            {
+                                winPoint.AddRange(l.Where(o => o.Y == Y - X + o.X));
+                            }
+                        }
+                        l.RemoveAll(o => o.Y == Y - X + o.X);
+                    }
+                    l.Add(new Point(X, Y));
 
                 }
             }
 
             message = "";
-            foreach (Point p in winPoint)
+            foreach (Point po in winPoint)
             {
-                message += "X:" + p.X + ",Y:" + p.Y + ";";
+                message += "X:" + po.X + ",Y:" + po.Y + ";";
             }
 
 
