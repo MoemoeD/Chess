@@ -40,7 +40,7 @@ namespace Board
         /// <summary>
         /// 获胜高亮
         /// </summary>
-        private List<Point> winPoint { get; set; }
+        public List<Point> winPoint { get; set; }
 
         /// <summary>
         /// 下棋
@@ -128,6 +128,17 @@ namespace Board
                         t.RemoveAll(o => o.Y == Y);
                     }
                     t.Add(new Point(X, Y));
+                    if (X == this.boardX - 1)
+                    {
+                        if (t.Where(o => o.Y == Y).Count() >= this.winLength)
+                        {
+                            if (state[X - 1, Y] != boardType.Blank)
+                            {
+                                winPoint.AddRange(t.Where(o => o.Y == Y));
+                            }
+                        }
+                        t.RemoveAll(o => o.Y == Y);
+                    }
 
                     //纵向
                     if (Y != 0 && state[X, Y] != state[X, Y - 1])
@@ -142,6 +153,17 @@ namespace Board
                         p.RemoveAll(o => o.X == X);
                     }
                     p.Add(new Point(X, Y));
+                    if (Y == this.boardY - 1)
+                    {
+                        if (p.Where(o => o.X == X).Count() >= this.winLength)
+                        {
+                            if (state[X, Y - 1] != boardType.Blank)
+                            {
+                                winPoint.AddRange(p.Where(o => o.X == X));
+                            }
+                        }
+                        p.RemoveAll(o => o.X == X);
+                    }
 
                     //左
                     if (X != 0 && Y < this.boardY - 1 && state[X, Y] != state[X - 1, Y + 1])
@@ -156,32 +178,47 @@ namespace Board
                         l.RemoveAll(o => o.Y == X + Y - o.X);
                     }
                     l.Add(new Point(X, Y));
+                    if (X == this.boardX - 1 || Y == 0)
+                    {
+                        if (l.Where(o => o.Y == X + Y - o.X).Count() >= this.winLength)
+                        {
+                            if (state[X - 1, Y + 1] != boardType.Blank)
+                            {
+                                winPoint.AddRange(l.Where(o => o.Y == X + Y - o.X));
+                            }
+                        }
+                        l.RemoveAll(o => o.Y == X + Y - o.X);
+                    }
 
                     //右
                     if (X != 0 && Y != 0 && state[X, Y] != state[X - 1, Y - 1])
                     {
-                        if (l.Where(o => o.Y == Y - X + o.X).Count() >= this.winLength)
+                        if (r.Where(o => o.Y == Y - X + o.X).Count() >= this.winLength)
                         {
                             if (state[X - 1, Y - 1] != boardType.Blank)
                             {
-                                winPoint.AddRange(l.Where(o => o.Y == Y - X + o.X));
+                                winPoint.AddRange(r.Where(o => o.Y == Y - X + o.X));
                             }
                         }
-                        l.RemoveAll(o => o.Y == Y - X + o.X);
+                        r.RemoveAll(o => o.Y == Y - X + o.X);
                     }
-                    l.Add(new Point(X, Y));
-
+                    r.Add(new Point(X, Y));
+                    if (X == this.boardX - 1 || Y == this.boardY - 1)
+                    {
+                        if (r.Where(o => o.Y == Y - X + o.X).Count() >= this.winLength)
+                        {
+                            if (state[X - 1, Y - 1] != boardType.Blank)
+                            {
+                                winPoint.AddRange(r.Where(o => o.Y == Y - X + o.X));
+                            }
+                        }
+                        r.RemoveAll(o => o.Y == Y - X + o.X);
+                    }
                 }
             }
 
             message = "";
-            foreach (Point po in winPoint)
-            {
-                message += "X:" + po.X + ",Y:" + po.Y + ";";
-            }
-
-
-            if (message == "")
+            if (this.winPoint.Count() == 0)
             {
                 return false;
             }
