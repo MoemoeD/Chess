@@ -11,48 +11,10 @@ namespace Piece
 {
     public class GobangPiece : BasePiece
     {
-        GobangBoard gobangBoard = GobangBoard.Instance();
-
-        public GobangPiece(int pixelx, int pixely)
-        {
-            this.pieceRadius = 15;
-            this.judgeRadius = 15;
-            this.pieceMainColor = Color.Black;
-            this.pieceBgColor = Color.White;
-
-            //判断是否点击在规定范围内
-            if (!ConvertxyToXY(pixelx, pixely))
-            {
-                return;
-            }
-
-            if (lastState == null || lastState == pieceType.White)
-            {
-                this.state = pieceType.Black;
-            }
-            else if (lastState == pieceType.Black)
-            {
-                this.state = pieceType.White;
-            }
-
-            if (!gobangBoard.SetState(new Point(this.pieceX, this.pieceY), Enum.GetName(typeof(pieceType), this.state)))
-            {
-                this.state = null;
-                return;
-            }
-
-            lastState = this.state;
-        }
-
         /// <summary>
-        /// 棋子颜色
+        /// 棋子边框颜色
         /// </summary>
-        private Color pieceMainColor { get; set; }
-
-        /// <summary>
-        /// 棋子反色
-        /// </summary>
-        private Color pieceBgColor { get; set; }
+        private Color pieceFrameColor { get; set; }
 
         /// <summary>
         /// 棋子半径
@@ -64,15 +26,55 @@ namespace Piece
         /// </summary>
         private int judgeRadius { get; set; }
 
+        GobangBoard gobangBoard = GobangBoard.Instance();
+
+        public GobangPiece(int pixelx, int pixely)
+        {
+            this.pieceRadius = 15;
+            this.judgeRadius = 15;
+            this.pieceFrameColor = Color.Black;
+
+            Point Point = new Point();
+            //判断是否点击在规定范围内
+            if (!ConvertxyToXY(pixelx, pixely, out Point))
+            {
+                return;
+            }
+            this.pieceX = Point.X;
+            this.pieceY = Point.Y;
+
+            //判断棋子状态类型
+            if (lastState == null || lastState == pieceType.White)
+            {
+                this.state = pieceType.Black;
+            }
+            else if (lastState == pieceType.Black)
+            {
+                this.state = pieceType.White;
+            }
+            else
+            {
+                return;
+            }
+
+            //下棋
+            if (!gobangBoard.SetState(this.pieceX, this.pieceY, Enum.GetName(typeof(pieceType), this.state)))
+            {
+                this.state = null;
+                return;
+            }
+
+            lastState = this.state;
+        }
+
         /// <summary>
         /// 点击坐标转换为棋盘坐标
         /// </summary>
         /// <param name="pixelx"></param>
         /// <param name="pixely"></param>
         /// <returns></returns>
-        private bool ConvertxyToXY(int pixelx, int pixely)
+        private bool ConvertxyToXY(int pixelx, int pixely, out Point Point)
         {
-            Point Point;
             if (!gobangBoard.GetBoardRangeByRealPoint(pixelx, pixely, out Point))
             {
                 return false;
@@ -85,8 +87,6 @@ namespace Piece
                 return false;
             }
 
-            this.pieceX = Point.X;
-            this.pieceY = Point.Y;
             return true;
         }
 
@@ -96,45 +96,30 @@ namespace Piece
         /// <param name="form"></param>
         public void DrawPiece(Form form)
         {
-            Point point = gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY);
+            //暂时通过是否拥有状态来判断是否初始化成功
+            if (this.state != null)
+            {
+                Point point = gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY);
 
-            if (this.state == pieceType.Black)
-            {
-                DrawSetBlack(form, point);
-            }
-            else if (this.state == pieceType.White)
-            {
-                DrawSetWhite(form, point);
+                DrawSetPiece(form, point, this.pieceRadius, Color.FromName(Enum.GetName(typeof(pieceType), this.state)), this.pieceFrameColor);
             }
         }
 
         /// <summary>
-        /// 绘制黑棋落子
+        /// 绘制落子
         /// </summary>
         /// <param name="form"></param>
-        private void DrawSetBlack(Form form, Point point)
+        /// <param name="point"></param>
+        /// <param name="pieceFrameColor"></param>
+        private void DrawSetPiece(Form form, Point point, int pieceRadius, Color pieceColor, Color pieceFrameColor)
         {
             Graphics graphics = form.CreateGraphics();
 
-            SolidBrush brush = new SolidBrush(this.pieceMainColor);
-            graphics.FillEllipse(brush, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+            SolidBrush brush = new SolidBrush(pieceColor);
+            graphics.FillEllipse(brush, point.X - pieceRadius, point.Y - pieceRadius, 2 * pieceRadius, 2 * pieceRadius);
 
-            graphics.Dispose();
-        }
-
-        /// <summary>
-        /// 绘制白棋落子
-        /// </summary>
-        /// <param name="form"></param>
-        private void DrawSetWhite(Form form, Point point)
-        {
-            Graphics graphics = form.CreateGraphics();
-
-            SolidBrush brush = new SolidBrush(this.pieceBgColor);
-            graphics.FillEllipse(brush, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
-
-            Pen pen = new Pen(this.pieceMainColor);
-            graphics.DrawEllipse(pen, point.X - this.pieceRadius, point.Y - this.pieceRadius, 2 * this.pieceRadius, 2 * this.pieceRadius);
+            Pen pen = new Pen(pieceFrameColor);
+            graphics.DrawEllipse(pen, point.X - pieceRadius, point.Y - pieceRadius, 2 * pieceRadius, 2 * pieceRadius);
 
             graphics.Dispose();
         }

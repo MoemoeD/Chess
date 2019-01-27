@@ -48,7 +48,7 @@ namespace Board
         /// <param name="point"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public bool SetState(Point Point, string type)
+        public bool SetState(int pieceX, int pieceY, string type)
         {
             boardType boardType;
             if (!Enum.TryParse<boardType>(type, out boardType))
@@ -57,12 +57,12 @@ namespace Board
             }
 
             //已被占用返回false
-            if (this.state[Point.X, Point.Y] != boardType.Blank)
+            if (this.state[pieceX, pieceY] != boardType.Blank)
             {
                 return false;
             }
 
-            this.state[Point.X, Point.Y] = boardType;
+            this.state[pieceX, pieceY] = boardType;
             this.records.Add((boardType[,])this.state.Clone());
 
             return true;
