@@ -10,6 +10,16 @@ namespace Board
 {
     public class GobangBoard : BaseBoard
     {
+        /// <summary>
+        /// 几子获胜
+        /// </summary>
+        private int winLength { get; set; }
+
+        /// <summary>
+        /// 获胜集合
+        /// </summary>
+        public List<Point> winPoint { get; set; }
+
         private static GobangBoard _gobangBoard = new GobangBoard();
 
         private GobangBoard()
@@ -31,16 +41,6 @@ namespace Board
         {
             return _gobangBoard;
         }
-
-        /// <summary>
-        /// 几子获胜
-        /// </summary>
-        private int winLength { get; set; }
-
-        /// <summary>
-        /// 获胜高亮
-        /// </summary>
-        public List<Point> winPoint { get; set; }
 
         /// <summary>
         /// 下棋

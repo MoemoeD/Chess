@@ -97,12 +97,14 @@ namespace Piece
         public void DrawPiece(Form form)
         {
             //暂时通过是否拥有状态来判断是否初始化成功
-            if (this.state != null)
+            if (this.state == null)
             {
-                Point point = gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY);
-
-                DrawSetPiece(form, point, this.pieceRadius, Color.FromName(Enum.GetName(typeof(pieceType), this.state)), this.pieceFrameColor);
+                return;
             }
+
+            Point point = gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY);
+
+            DrawSetPiece(form, point, this.pieceRadius, Color.FromName(Enum.GetName(typeof(pieceType), this.state)), this.pieceFrameColor);
         }
 
         /// <summary>
