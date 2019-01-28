@@ -34,6 +34,7 @@ namespace Board
             this.state = new boardType[this.boardX, this.boardY];
             this.records = new List<boardType[,]>();
             this.records.Add(new boardType[this.boardX, this.boardY]);
+            this.logs = new List<log>();
             this.winLength = 5;
         }
 
@@ -64,6 +65,7 @@ namespace Board
 
             this.state[pieceX, pieceY] = boardType;
             this.records.Add((boardType[,])this.state.Clone());
+            this.logs.Add(new log() { X = pieceX, Y = pieceY, state = boardType, action = actionType.Add });
 
             return true;
         }

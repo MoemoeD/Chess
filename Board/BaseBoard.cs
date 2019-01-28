@@ -55,6 +55,37 @@ namespace Board
         protected List<boardType[,]> records { get; set; }
 
         /// <summary>
+        /// 棋谱
+        /// </summary>
+        protected List<log> logs { get; set; }
+
+        /// <summary>
+        /// 记录
+        /// </summary>
+        protected class log
+        {
+            /// <summary>
+            /// X
+            /// </summary>
+            internal int X { get; set; }
+
+            /// <summary>
+            /// Y
+            /// </summary>
+            internal int Y { get; set; }
+
+            /// <summary>
+            /// 点位状态
+            /// </summary>
+            internal boardType state { get; set; }
+
+            /// <summary>
+            /// 行动状态
+            /// </summary>
+            internal actionType action { get; set; }
+        }
+
+        /// <summary>
         /// 棋盘点位状态类型
         /// </summary>
         protected enum boardType
@@ -73,6 +104,27 @@ namespace Board
             /// 白
             /// </summary>
             White,
+        }
+
+        /// <summary>
+        /// 行动状态类型
+        /// </summary>
+        protected enum actionType
+        {
+            /// <summary>
+            /// 添加
+            /// </summary>
+            Add,
+
+            /// <summary>
+            /// 移除
+            /// </summary>
+            Remove,
+
+            /// <summary>
+            /// 获胜
+            /// </summary>
+            Victory,
         }
 
         /// <summary>
