@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Board
@@ -18,7 +16,7 @@ namespace Board
         /// <summary>
         /// 获胜集合
         /// </summary>
-        public List<Point> winPoint { get; set; }
+        private List<Point> winPoint { get; set; }
 
         private static GobangBoard _gobangBoard = new GobangBoard();
 
@@ -63,9 +61,15 @@ namespace Board
                 return false;
             }
 
+            //如有获胜状态，游戏结束
+            if (this.logs.Where(o => o.action == actionType.Victory).Count() > 0)
+            {
+                return false;
+            }
+
             this.state[pieceX, pieceY] = boardType;
             this.records.Add((boardType[,])this.state.Clone());
-            this.logs.Add(new log() { X = pieceX, Y = pieceY, state = boardType, action = actionType.Add });
+            this.logs.Add(new log(pieceX, pieceY, boardType, boardType.Blank, actionType.Add, logs.Count()));
 
             return true;
         }

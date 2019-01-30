@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Board
 {
@@ -67,12 +63,12 @@ namespace Board
             /// <summary>
             /// X
             /// </summary>
-            internal int X { get; set; }
+            internal int pieceX { get; set; }
 
             /// <summary>
             /// Y
             /// </summary>
-            internal int Y { get; set; }
+            internal int pieceY { get; set; }
 
             /// <summary>
             /// 点位状态
@@ -80,9 +76,29 @@ namespace Board
             internal boardType state { get; set; }
 
             /// <summary>
+            /// 之前点位状态
+            /// </summary>
+            internal boardType lastState { get; set; }
+
+            /// <summary>
             /// 行动状态
             /// </summary>
             internal actionType action { get; set; }
+
+            /// <summary>
+            /// 步数
+            /// </summary>
+            internal int count { get; set; }
+
+            internal log(int pieceX, int pieceY, boardType state, boardType lastState, actionType action, int count)
+            {
+                this.pieceX = pieceX;
+                this.pieceY = pieceY;
+                this.state = state;
+                this.lastState = lastState;
+                this.action = action;
+                this.count = count;
+            }
         }
 
         /// <summary>

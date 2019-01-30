@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace Piece
 {
@@ -43,5 +39,20 @@ namespace Piece
             /// </summary>
             White,
         }
+
+        /// <summary>
+        /// 棋子边框颜色
+        /// </summary>
+        protected Color pieceFrameColor { get; set; }
+
+        /// <summary>
+        /// 棋子半径
+        /// </summary>
+        protected int pieceRadius { get; set; }
+
+        /// <summary>
+        /// 判定半径
+        /// </summary>
+        protected int judgeRadius { get; set; }
     }
 }

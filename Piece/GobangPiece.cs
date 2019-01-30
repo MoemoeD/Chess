@@ -1,31 +1,12 @@
 ﻿using Board;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Piece
 {
     public class GobangPiece : BasePiece
     {
-        /// <summary>
-        /// 棋子边框颜色
-        /// </summary>
-        private Color pieceFrameColor { get; set; }
-
-        /// <summary>
-        /// 棋子半径
-        /// </summary>
-        private int pieceRadius { get; set; }
-
-        /// <summary>
-        /// 判断半径
-        /// </summary>
-        private int judgeRadius { get; set; }
-
         GobangBoard gobangBoard = GobangBoard.Instance();
 
         public GobangPiece(int pixelx, int pixely)
