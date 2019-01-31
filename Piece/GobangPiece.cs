@@ -7,12 +7,18 @@ namespace Piece
 {
     public class GobangPiece : BasePiece
     {
+        /// <summary>
+        /// 获胜棋子半径
+        /// </summary>
+        private int pieceWinRadius { get; set; }
+
         GobangBoard gobangBoard = GobangBoard.Instance();
 
         public GobangPiece(int pixelx, int pixely)
         {
             this.pieceRadius = 15;
             this.judgeRadius = 15;
+            this.pieceWinRadius = 20;
             this.pieceFrameColor = Color.Black;
 
             Point Point = new Point();
@@ -86,6 +92,22 @@ namespace Piece
             Point point = gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY);
 
             DrawSetPiece(form, point, this.pieceRadius, Color.FromName(Enum.GetName(typeof(pieceType), this.state)), this.pieceFrameColor);
+        }
+
+        /// <summary>
+        /// 绘制获胜棋子
+        /// </summary>
+        /// <param name="form"></param>
+        public void DrawWinPiece(Form form)
+        {
+            if (gobangBoard.winPoint.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Point p in gobangBoard.winPoint)
+            {
+            }
         }
 
         /// <summary>

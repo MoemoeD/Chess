@@ -56,6 +56,11 @@ namespace Board
         protected List<log> logs { get; set; }
 
         /// <summary>
+        /// 步数
+        /// </summary>
+        protected int count { get; set; }
+
+        /// <summary>
         /// 记录
         /// </summary>
         protected class log

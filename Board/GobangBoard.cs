@@ -16,7 +16,7 @@ namespace Board
         /// <summary>
         /// 获胜集合
         /// </summary>
-        private List<Point> winPoint { get; set; }
+        public List<Point> winPoint { get; set; }
 
         private static GobangBoard _gobangBoard = new GobangBoard();
 
@@ -34,6 +34,7 @@ namespace Board
             this.records.Add(new boardType[this.boardX, this.boardY]);
             this.logs = new List<log>();
             this.winLength = 5;
+            this.count = 0;
         }
 
         public static GobangBoard Instance()
@@ -68,8 +69,8 @@ namespace Board
             }
 
             this.state[pieceX, pieceY] = boardType;
-            this.records.Add((boardType[,])this.state.Clone());
-            this.logs.Add(new log(pieceX, pieceY, boardType, boardType.Blank, actionType.Add, logs.Count()));
+            this.count++;
+            this.logs.Add(new log(pieceX, pieceY, boardType, boardType.Blank, actionType.Add, this.count));
 
             return true;
         }
@@ -106,9 +107,9 @@ namespace Board
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public bool DoJudgmentLogic(out string message)
+        public void DoJudgmentLogic()
         {
-            winPoint = new List<Point>();
+            this.winPoint = new List<Point>();
             //横向
             List<Point> t = new List<Point>();
             //纵向
@@ -128,7 +129,7 @@ namespace Board
                         {
                             if (state[X - 1, Y] != boardType.Blank)
                             {
-                                winPoint.AddRange(t.Where(o => o.Y == Y));
+                                this.winPoint.AddRange(t.Where(o => o.Y == Y));
                             }
                         }
                         t.RemoveAll(o => o.Y == Y);
@@ -140,7 +141,7 @@ namespace Board
                         {
                             if (state[X - 1, Y] != boardType.Blank)
                             {
-                                winPoint.AddRange(t.Where(o => o.Y == Y));
+                                this.winPoint.AddRange(t.Where(o => o.Y == Y));
                             }
                         }
                         t.RemoveAll(o => o.Y == Y);
@@ -153,7 +154,7 @@ namespace Board
                         {
                             if (state[X, Y - 1] != boardType.Blank)
                             {
-                                winPoint.AddRange(p.Where(o => o.X == X));
+                                this.winPoint.AddRange(p.Where(o => o.X == X));
                             }
                         }
                         p.RemoveAll(o => o.X == X);
@@ -165,7 +166,7 @@ namespace Board
                         {
                             if (state[X, Y - 1] != boardType.Blank)
                             {
-                                winPoint.AddRange(p.Where(o => o.X == X));
+                                this.winPoint.AddRange(p.Where(o => o.X == X));
                             }
                         }
                         p.RemoveAll(o => o.X == X);
@@ -178,7 +179,7 @@ namespace Board
                         {
                             if (state[X - 1, Y + 1] != boardType.Blank)
                             {
-                                winPoint.AddRange(l.Where(o => o.Y == X + Y - o.X));
+                                this.winPoint.AddRange(l.Where(o => o.Y == X + Y - o.X));
                             }
                         }
                         l.RemoveAll(o => o.Y == X + Y - o.X);
@@ -190,7 +191,7 @@ namespace Board
                         {
                             if (state[X - 1, Y + 1] != boardType.Blank)
                             {
-                                winPoint.AddRange(l.Where(o => o.Y == X + Y - o.X));
+                                this.winPoint.AddRange(l.Where(o => o.Y == X + Y - o.X));
                             }
                         }
                         l.RemoveAll(o => o.Y == X + Y - o.X);
@@ -203,7 +204,7 @@ namespace Board
                         {
                             if (state[X - 1, Y - 1] != boardType.Blank)
                             {
-                                winPoint.AddRange(r.Where(o => o.Y == Y - X + o.X));
+                                this.winPoint.AddRange(r.Where(o => o.Y == Y - X + o.X));
                             }
                         }
                         r.RemoveAll(o => o.Y == Y - X + o.X);
@@ -215,7 +216,7 @@ namespace Board
                         {
                             if (state[X - 1, Y - 1] != boardType.Blank)
                             {
-                                winPoint.AddRange(r.Where(o => o.Y == Y - X + o.X));
+                                this.winPoint.AddRange(r.Where(o => o.Y == Y - X + o.X));
                             }
                         }
                         r.RemoveAll(o => o.Y == Y - X + o.X);
@@ -223,12 +224,13 @@ namespace Board
                 }
             }
 
-            message = "";
-            if (this.winPoint.Count() == 0)
+            this.records.Add((boardType[,])this.state.Clone());
+
+            if (this.winPoint.Count() > 0)
             {
-                return false;
+                log log = logs.Where(o => o.action == actionType.Add && o.count == this.count).First();
+                logs.Add(new log(log.pieceX, log.pieceY, log.state, log.lastState, actionType.Victory, log.count));
             }
-            return true;
         }
     }
 }

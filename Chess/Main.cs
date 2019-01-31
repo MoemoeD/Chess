@@ -47,10 +47,8 @@ namespace Chess
                 piece.DrawPiece(this);
 
                 GobangBoard board = GobangBoard.Instance();
-                if (board.DoJudgmentLogic(out message))
-                {
-                    MessageBox.Show(message);
-                }
+                board.DoJudgmentLogic();
+                piece.DrawWinPiece(this);
             }
             catch (Exception ex)
             {
