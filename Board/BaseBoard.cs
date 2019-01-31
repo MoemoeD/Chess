@@ -109,7 +109,7 @@ namespace Board
         /// <summary>
         /// 棋盘点位状态类型
         /// </summary>
-        protected enum boardType
+        public enum boardType
         {
             /// <summary>
             /// 空

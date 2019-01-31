@@ -100,13 +100,14 @@ namespace Piece
         /// <param name="form"></param>
         public void DrawWinPiece(Form form)
         {
-            if (gobangBoard.winPoint.Count == 0)
+            if (gobangBoard.winPoints.Count == 0)
             {
                 return;
             }
 
-            foreach (Point p in gobangBoard.winPoint)
+            foreach (var p in gobangBoard.winPoints)
             {
+                DrawSetPiece(form, gobangBoard.GetRealPointByBoardPoint(p.pieceX, p.pieceY), this.pieceWinRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), p.state)), this.pieceFrameColor);
             }
         }
 

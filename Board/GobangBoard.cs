@@ -16,7 +16,32 @@ namespace Board
         /// <summary>
         /// 获胜集合
         /// </summary>
-        public List<Point> winPoint { get; set; }
+        public List<winPoint> winPoints { get; set; }
+
+        public class winPoint
+        {
+            /// <summary>
+            /// X
+            /// </summary>
+            public int pieceX { get; set; }
+
+            /// <summary>
+            /// Y
+            /// </summary>
+            public int pieceY { get; set; }
+
+            /// <summary>
+            /// 点位状态
+            /// </summary>
+            public boardType state { get; set; }
+
+            public winPoint(int pieceX, int pieceY, boardType state)
+            {
+                this.pieceX = pieceX;
+                this.pieceY = pieceY;
+                this.state = state;
+            }
+        }
 
         private static GobangBoard _gobangBoard = new GobangBoard();
 
@@ -109,15 +134,15 @@ namespace Board
         /// <returns></returns>
         public void DoJudgmentLogic()
         {
-            this.winPoint = new List<Point>();
+            this.winPoints = new List<winPoint>();
             //横向
-            List<Point> t = new List<Point>();
+            List<winPoint> t = new List<winPoint>();
             //纵向
-            List<Point> p = new List<Point>();
+            List<winPoint> p = new List<winPoint>();
             //左
-            List<Point> l = new List<Point>();
+            List<winPoint> l = new List<winPoint>();
             //右
-            List<Point> r = new List<Point>();
+            List<winPoint> r = new List<winPoint>();
             for (int X = 0; X < this.boardX; X++)
             {
                 for (int Y = 0; Y < this.boardY; Y++)
@@ -125,108 +150,109 @@ namespace Board
                     //横向
                     if (X != 0 && state[X, Y] != state[X - 1, Y])
                     {
-                        if (t.Where(o => o.Y == Y).Count() >= this.winLength)
+                        if (t.Where(o => o.pieceY == Y).Count() >= this.winLength)
                         {
                             if (state[X - 1, Y] != boardType.Blank)
                             {
-                                this.winPoint.AddRange(t.Where(o => o.Y == Y));
+
+                                this.winPoints.AddRange(t.Where(o => o.pieceY == Y));
                             }
                         }
-                        t.RemoveAll(o => o.Y == Y);
+                        t.RemoveAll(o => o.pieceY == Y);
                     }
-                    t.Add(new Point(X, Y));
+                    t.Add(new winPoint(X, Y, state[X, Y]));
                     if (X == this.boardX - 1)
                     {
-                        if (t.Where(o => o.Y == Y).Count() >= this.winLength)
+                        if (t.Where(o => o.pieceY == Y).Count() >= this.winLength)
                         {
                             if (state[X - 1, Y] != boardType.Blank)
                             {
-                                this.winPoint.AddRange(t.Where(o => o.Y == Y));
+                                this.winPoints.AddRange(t.Where(o => o.pieceY == Y));
                             }
                         }
-                        t.RemoveAll(o => o.Y == Y);
+                        t.RemoveAll(o => o.pieceY == Y);
                     }
 
                     //纵向
                     if (Y != 0 && state[X, Y] != state[X, Y - 1])
                     {
-                        if (p.Where(o => o.X == X).Count() >= this.winLength)
+                        if (p.Where(o => o.pieceX == X).Count() >= this.winLength)
                         {
                             if (state[X, Y - 1] != boardType.Blank)
                             {
-                                this.winPoint.AddRange(p.Where(o => o.X == X));
+                                this.winPoints.AddRange(p.Where(o => o.pieceX == X));
                             }
                         }
-                        p.RemoveAll(o => o.X == X);
+                        p.RemoveAll(o => o.pieceX == X);
                     }
-                    p.Add(new Point(X, Y));
+                    p.Add(new winPoint(X, Y, state[X, Y]));
                     if (Y == this.boardY - 1)
                     {
-                        if (p.Where(o => o.X == X).Count() >= this.winLength)
+                        if (p.Where(o => o.pieceX == X).Count() >= this.winLength)
                         {
                             if (state[X, Y - 1] != boardType.Blank)
                             {
-                                this.winPoint.AddRange(p.Where(o => o.X == X));
+                                this.winPoints.AddRange(p.Where(o => o.pieceX == X));
                             }
                         }
-                        p.RemoveAll(o => o.X == X);
+                        p.RemoveAll(o => o.pieceX == X);
                     }
 
                     //左
                     if (X != 0 && Y < this.boardY - 1 && state[X, Y] != state[X - 1, Y + 1])
                     {
-                        if (l.Where(o => o.Y == X + Y - o.X).Count() >= this.winLength)
+                        if (l.Where(o => o.pieceY == X + Y - o.pieceX).Count() >= this.winLength)
                         {
                             if (state[X - 1, Y + 1] != boardType.Blank)
                             {
-                                this.winPoint.AddRange(l.Where(o => o.Y == X + Y - o.X));
+                                this.winPoints.AddRange(l.Where(o => o.pieceY == X + Y - o.pieceX));
                             }
                         }
-                        l.RemoveAll(o => o.Y == X + Y - o.X);
+                        l.RemoveAll(o => o.pieceY == X + Y - o.pieceX);
                     }
-                    l.Add(new Point(X, Y));
+                    l.Add(new winPoint(X, Y, state[X, Y]));
                     if (X == this.boardX - 1 || Y == 0)
                     {
-                        if (l.Where(o => o.Y == X + Y - o.X).Count() >= this.winLength)
+                        if (l.Where(o => o.pieceY == X + Y - o.pieceX).Count() >= this.winLength)
                         {
                             if (state[X - 1, Y + 1] != boardType.Blank)
                             {
-                                this.winPoint.AddRange(l.Where(o => o.Y == X + Y - o.X));
+                                this.winPoints.AddRange(l.Where(o => o.pieceY == X + Y - o.pieceX));
                             }
                         }
-                        l.RemoveAll(o => o.Y == X + Y - o.X);
+                        l.RemoveAll(o => o.pieceY == X + Y - o.pieceX);
                     }
 
                     //右
                     if (X != 0 && Y != 0 && state[X, Y] != state[X - 1, Y - 1])
                     {
-                        if (r.Where(o => o.Y == Y - X + o.X).Count() >= this.winLength)
+                        if (r.Where(o => o.pieceY == Y - X + o.pieceX).Count() >= this.winLength)
                         {
                             if (state[X - 1, Y - 1] != boardType.Blank)
                             {
-                                this.winPoint.AddRange(r.Where(o => o.Y == Y - X + o.X));
+                                this.winPoints.AddRange(r.Where(o => o.pieceY == Y - X + o.pieceX));
                             }
                         }
-                        r.RemoveAll(o => o.Y == Y - X + o.X);
+                        r.RemoveAll(o => o.pieceY == Y - X + o.pieceX);
                     }
-                    r.Add(new Point(X, Y));
+                    r.Add(new winPoint(X, Y, state[X, Y]));
                     if (X == this.boardX - 1 || Y == this.boardY - 1)
                     {
-                        if (r.Where(o => o.Y == Y - X + o.X).Count() >= this.winLength)
+                        if (r.Where(o => o.pieceY == Y - X + o.pieceX).Count() >= this.winLength)
                         {
                             if (state[X - 1, Y - 1] != boardType.Blank)
                             {
-                                this.winPoint.AddRange(r.Where(o => o.Y == Y - X + o.X));
+                                this.winPoints.AddRange(r.Where(o => o.pieceY == Y - X + o.pieceX));
                             }
                         }
-                        r.RemoveAll(o => o.Y == Y - X + o.X);
+                        r.RemoveAll(o => o.pieceY == Y - X + o.pieceX);
                     }
                 }
             }
 
             this.records.Add((boardType[,])this.state.Clone());
 
-            if (this.winPoint.Count() > 0)
+            if (this.winPoints.Count() > 0)
             {
                 log log = logs.Where(o => o.action == actionType.Add && o.count == this.count).First();
                 logs.Add(new log(log.pieceX, log.pieceY, log.state, log.lastState, actionType.Victory, log.count));
