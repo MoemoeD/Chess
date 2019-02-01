@@ -1,5 +1,6 @@
 ﻿using Board;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Piece
 {
@@ -39,5 +40,30 @@ namespace Piece
         /// 判定半径
         /// </summary>
         protected int judgeRadius { get; set; }
+
+        /// <summary>
+        /// 点击坐标转换为棋盘坐标
+        /// </summary>
+        /// <param name="pixelx"></param>
+        /// <param name="pixely"></param>
+        /// <param name="Point"></param>
+        /// <returns></returns>
+        protected abstract bool ConvertxyToXY(int pixelx, int pixely, out Point Point);
+
+        /// <summary>
+        /// 绘制棋子
+        /// </summary>
+        /// <param name="form"></param>
+        public abstract void DrawPiece(Form form);
+
+        /// <summary>
+        /// 绘制棋子
+        /// </summary>
+        /// <param name="form"></param>
+        /// <param name="point"></param>
+        /// <param name="pieceRadius"></param>
+        /// <param name="pieceColor"></param>
+        /// <param name="pieceFrameColor"></param>
+        protected abstract void DrawSetPiece(Form form, Point point, int pieceRadius, Color pieceColor, Color pieceFrameColor);
     }
 }

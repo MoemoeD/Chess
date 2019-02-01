@@ -60,7 +60,7 @@ namespace Piece
         /// <param name="pixelx"></param>
         /// <param name="pixely"></param>
         /// <returns></returns>
-        private bool ConvertxyToXY(int pixelx, int pixely, out Point Point)
+        protected override bool ConvertxyToXY(int pixelx, int pixely, out Point Point)
         {
             if (!gobangBoard.GetBoardRangeByRealPoint(pixelx, pixely, out Point))
             {
@@ -81,7 +81,7 @@ namespace Piece
         /// 绘制棋子
         /// </summary>
         /// <param name="form"></param>
-        public void DrawPiece(Form form)
+        public override void DrawPiece(Form form)
         {
             //暂时通过是否拥有状态来判断是否初始化成功
             if (this.state != BaseBoard.boardType.Blank)
@@ -96,12 +96,12 @@ namespace Piece
         }
 
         /// <summary>
-        /// 绘制落子
+        /// 绘制棋子
         /// </summary>
         /// <param name="form"></param>
         /// <param name="point"></param>
         /// <param name="pieceFrameColor"></param>
-        private void DrawSetPiece(Form form, Point point, int pieceRadius, Color pieceColor, Color pieceFrameColor)
+        protected override void DrawSetPiece(Form form, Point point, int pieceRadius, Color pieceColor, Color pieceFrameColor)
         {
             Graphics graphics = form.CreateGraphics();
 

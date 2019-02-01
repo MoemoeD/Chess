@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Board
 {
@@ -147,6 +148,26 @@ namespace Board
             /// </summary>
             Victory,
         }
+
+        /// <summary>
+        /// 下棋
+        /// </summary>
+        /// <param name="pieceX"></param>
+        /// <param name="pieceY"></param>
+        /// <param name="boardType"></param>
+        /// <returns></returns>
+        public abstract bool SetState(int pieceX, int pieceY, boardType boardType);
+
+        /// <summary>
+        /// 绘制棋盘
+        /// </summary>
+        /// <param name="form"></param>
+        public abstract void DrawBoard(Form form);
+
+        /// <summary>
+        /// 判断逻辑
+        /// </summary>
+        protected abstract void DoJudgmentLogic();
 
         /// <summary>
         /// 获得棋盘点的具体坐标

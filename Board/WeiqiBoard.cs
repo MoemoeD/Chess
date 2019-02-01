@@ -36,7 +36,7 @@ namespace Board
         /// <param name="point"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public bool SetState(int pieceX, int pieceY, boardType boardType)
+        public override bool SetState(int pieceX, int pieceY, boardType boardType)
         {
             //已被占用返回false
             if (this.state[pieceX, pieceY] != boardType.Blank)
@@ -63,7 +63,7 @@ namespace Board
         /// 绘制棋盘
         /// </summary>
         /// <param name="form"></param>
-        public void DrawBoard(Form form)
+        public override void DrawBoard(Form form)
         {
             Pen pen = new Pen(this.mainColor);
 
@@ -89,9 +89,7 @@ namespace Board
         /// <summary>
         /// 判断逻辑
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        private void DoJudgmentLogic()
+        protected override void DoJudgmentLogic()
         {
             this.records.Add((boardType[,])this.state.Clone());
         }
