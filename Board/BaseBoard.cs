@@ -174,6 +174,7 @@ namespace Board
             int X = (pixelx - this.initialPixelx + this.gapPixel / 2) / this.gapPixel;
             int Y = (pixely - this.initialPixely + this.gapPixel / 2) / this.gapPixel;
 
+            //判断-0
             int remainderx = (pixelx - this.initialPixelx + this.gapPixel / 2) % this.gapPixel;
             int remaindery = (pixely - this.initialPixely + this.gapPixel / 2) % this.gapPixel;
 

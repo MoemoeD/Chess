@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -58,8 +57,8 @@ namespace Board
             this.records = new List<boardType[,]>();
             this.records.Add(new boardType[this.boardX, this.boardY]);
             this.logs = new List<log>();
-            this.winLength = 5;
             this.count = 0;
+            this.winLength = 5;
         }
 
         public static GobangBoard Instance()
@@ -73,14 +72,8 @@ namespace Board
         /// <param name="point"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public bool SetState(int pieceX, int pieceY, string type)
+        public bool SetState(int pieceX, int pieceY, boardType boardType)
         {
-            boardType boardType;
-            if (!Enum.TryParse<boardType>(type, out boardType))
-            {
-                return false;
-            }
-
             //已被占用返回false
             if (this.state[pieceX, pieceY] != boardType.Blank)
             {
@@ -96,6 +89,8 @@ namespace Board
             this.state[pieceX, pieceY] = boardType;
             this.count++;
             this.logs.Add(new log(pieceX, pieceY, boardType, boardType.Blank, actionType.Add, this.count));
+
+            DoJudgmentLogic();
 
             return true;
         }
@@ -132,7 +127,7 @@ namespace Board
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public void DoJudgmentLogic()
+        private void DoJudgmentLogic()
         {
             this.winPoints = new List<winPoint>();
             //横向

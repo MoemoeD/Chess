@@ -36,8 +36,6 @@ namespace Chess
         {
             try
             {
-                string message = string.Empty;
-
                 if (e.Button != MouseButtons.Left)
                 {
                     return;
@@ -45,10 +43,6 @@ namespace Chess
 
                 GobangPiece piece = new GobangPiece(e.X, e.Y);
                 piece.DrawPiece(this);
-
-                GobangBoard board = GobangBoard.Instance();
-                board.DoJudgmentLogic();
-                piece.DrawWinPiece(this);
             }
             catch (Exception ex)
             {

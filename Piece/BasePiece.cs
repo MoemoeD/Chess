@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Board;
+using System.Drawing;
 
 namespace Piece
 {
@@ -17,28 +18,12 @@ namespace Piece
         /// <summary>
         /// 棋子状态
         /// </summary>
-        protected pieceType? state { get; set; }
+        protected BaseBoard.boardType state { get; set; }
 
         /// <summary>
         /// 上一枚棋子状态
         /// </summary>
-        protected static pieceType? lastState { get; set; }
-
-        /// <summary>
-        /// 棋子状态类型
-        /// </summary>
-        protected enum pieceType
-        {
-            /// <summary>
-            /// 黑
-            /// </summary>
-            Black,
-
-            /// <summary>
-            /// 白
-            /// </summary>
-            White,
-        }
+        protected static BaseBoard.boardType lastState { get; set; }
 
         /// <summary>
         /// 棋子边框颜色
