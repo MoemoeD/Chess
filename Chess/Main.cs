@@ -23,7 +23,7 @@ namespace Chess
         {
             try
             {
-                GobangBoard board = GobangBoard.Instance();
+                WeiqiBoard board = WeiqiBoard.Instance();
                 board.DrawBoard(this);
             }
             catch (Exception ex)
@@ -41,7 +41,7 @@ namespace Chess
                     return;
                 }
 
-                GobangPiece piece = new GobangPiece(e.X, e.Y);
+                WeiqiPiece piece = new WeiqiPiece(e.X, e.Y);
                 piece.DrawPiece(this);
             }
             catch (Exception ex)
