@@ -7,6 +7,50 @@ namespace Board
 {
     public class WeiqiBoard : BaseBoard
     {
+        /// <summary>
+        /// 更改集合
+        /// </summary>
+        public List<changePoint> changePoints { get; set; }
+
+        public class changePoint
+        {
+            /// <summary>
+            /// X
+            /// </summary>
+            public int pieceX { get; set; }
+
+            /// <summary>
+            /// Y
+            /// </summary>
+            public int pieceY { get; set; }
+
+            /// <summary>
+            /// 点位状态
+            /// </summary>
+            public boardType state { get; set; }
+
+            /// <summary>
+            /// 有几口气
+            /// </summary>
+            internal int life { get; set; }
+
+            public changePoint(int pieceX, int pieceY, boardType state)
+            {
+                this.pieceX = pieceX;
+                this.pieceY = pieceY;
+                this.state = state;
+                this.life = 0;
+            }
+
+            /// <summary>
+            /// 续命
+            /// </summary>
+            internal void setLife()
+            {
+                this.life++;
+            }
+        }
+
         private static WeiqiBoard _weiqiBoard = new WeiqiBoard();
 
         private WeiqiBoard()
@@ -91,20 +135,12 @@ namespace Board
         /// </summary>
         private void DoJudgmentLogic(int pieceX, int pieceY, boardType boardType)
         {
+            this.changePoints = new List<changePoint>();
+            List<changePoint> equalPoints = new List<changePoint>();
 
+            changePoint pOriginal = new changePoint(pieceX, pieceY, boardType);
+            equalPoints.Add(pOriginal);
 
-
-            this.records.Add((boardType[,])this.state.Clone());
-        }
-
-        /// <summary>
-        /// 递归判断
-        /// </summary>
-        /// <param name="pieceX"></param>
-        /// <param name="pieceY"></param>
-        /// <param name="boardType"></param>
-        private void CheckPoint(int pieceX, int pieceY, boardType boardType)
-        {
             for (int X = -1; X <= 1; X++)
             {
                 for (int Y = -1; Y <= 1; Y++)
@@ -117,15 +153,71 @@ namespace Board
 
                     if (state[pieceX + X, pieceY + Y] == boardType.Blank)
                     {
-
+                        pOriginal.setLife();
                     }
                     else if (state[pieceX + X, pieceY + Y] == boardType)
                     {
-
+                        CheckPoint(pieceX + X, pieceY + Y, state[pieceX + X, pieceY + Y], equalPoints);
                     }
                     else if (state[pieceX + X, pieceY + Y] != boardType)
                     {
+                        List<changePoint> unequalPoints = new List<changePoint>();
+                        CheckPoint(pieceX + X, pieceY + Y, state[pieceX + X, pieceY + Y], unequalPoints);
+                        if (unequalPoints.Where(o => o.life > 0).Count() == 0)
+                        {
+                            changePoints.AddRange(unequalPoints);
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
 
+            if (changePoints.Count() == 0 && equalPoints.Where(o => o.life > 0).Count() == 0)
+            {
+                changePoints.AddRange(equalPoints);
+            }
+
+            this.records.Add((boardType[,])this.state.Clone());
+        }
+
+        /// <summary>
+        /// 递归判断
+        /// </summary>
+        /// <param name="pieceX"></param>
+        /// <param name="pieceY"></param>
+        /// <param name="boardType"></param>
+        private void CheckPoint(int pieceX, int pieceY, boardType boardType, List<changePoint> cp)
+        {
+            if (cp.Where(o => o.life > 0).Count() > 0)
+                return;
+
+            changePoint p = new changePoint(pieceX, pieceY, boardType);
+            cp.Add(p);
+
+            for (int X = -1; X <= 1; X++)
+            {
+                for (int Y = -1; Y <= 1; Y++)
+                {
+                    //只剩下上下左右四个位置
+                    if (X != 0 && Y != 0 || X == 0 && Y == 0)
+                        continue;
+                    if (pieceX + X < 0 || pieceX + X >= this.boardX || pieceY + Y < 0 || pieceY + Y >= this.boardY)
+                        continue;
+                    if (cp.Where(o => o.pieceX == pieceX + X && o.pieceY == pieceY + Y).Count() > 0)
+                    {
+                        continue;
+                    }
+
+                    if (state[pieceX + X, pieceY + Y] == boardType.Blank)
+                    {
+                        p.setLife();
+                    }
+                    else if (state[pieceX + X, pieceY + Y] == boardType)
+                    {
+                        CheckPoint(pieceX + X, pieceY + Y, state[pieceX + X, pieceY + Y], cp);
                     }
                     else
                     {
