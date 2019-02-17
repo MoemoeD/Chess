@@ -82,6 +82,11 @@ namespace Piece
             {
                 DrawSetPiece(form, weiqiBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
             }
+
+            foreach (var p in weiqiBoard.changePoints)
+            {
+                DrawRemovePiece(form, weiqiBoard.GetRealPointByBoardPoint(p.pieceX, p.pieceY), weiqiBoard.gapPixel, weiqiBoard.mainColor, weiqiBoard.bgColor);
+            }
         }
 
         /// <summary>
@@ -99,6 +104,35 @@ namespace Piece
 
             Pen pen = new Pen(pieceFrameColor);
             graphics.DrawEllipse(pen, point.X - pieceRadius, point.Y - pieceRadius, 2 * pieceRadius, 2 * pieceRadius);
+
+            graphics.Dispose();
+        }
+
+        /// <summary>
+        /// 移除棋子
+        /// </summary>
+        /// <param name="form"></param>
+        /// <param name="point"></param>
+        /// <param name="gapPixel"></param>
+        /// <param name="mainColor"></param>
+        /// <param name="bgColor"></param>
+        private void DrawRemovePiece(Form form, Point point, int gapPixel, Color mainColor, Color bgColor)
+        {
+            int halfGapPixel = Convert.ToInt32(0.5 * gapPixel);
+
+            Pen pen = new Pen(mainColor);
+
+            Graphics graphics = form.CreateGraphics();
+
+            SolidBrush brush = new SolidBrush(bgColor);
+            graphics.FillRectangle(brush, point.X - halfGapPixel, point.Y - halfGapPixel, gapPixel, gapPixel);
+
+            Point a = new Point(point.X - halfGapPixel, point.Y);
+            Point b = new Point(point.X + halfGapPixel, point.Y);
+            graphics.DrawLine(pen, a, b);
+            Point c = new Point(point.X, point.Y - halfGapPixel);
+            Point d = new Point(point.X, point.Y + halfGapPixel);
+            graphics.DrawLine(pen, c, d);
 
             graphics.Dispose();
         }

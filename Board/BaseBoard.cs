@@ -19,7 +19,7 @@ namespace Board
         /// <summary>
         /// 间隙
         /// </summary>
-        protected int gapPixel { get; set; }
+        public int gapPixel { get; set; }
 
         /// <summary>
         /// 棋盘基准坐标X
@@ -34,12 +34,12 @@ namespace Board
         /// <summary>
         /// 棋盘颜色
         /// </summary>
-        protected Color mainColor { get; set; }
+        public Color mainColor { get; set; }
 
         /// <summary>
         /// 棋盘背景颜色
         /// </summary>
-        protected Color bgColor { get; set; }
+        public Color bgColor { get; set; }
 
         /// <summary>
         /// 棋盘点位状态

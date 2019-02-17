@@ -180,6 +180,12 @@ namespace Board
                 changePoints.AddRange(equalPoints);
             }
 
+            foreach (var i in changePoints.GroupBy(o => new { o.pieceX, o.pieceY, o.state }).Select(o => o.First()))
+            {
+                this.logs.Add(new log(i.pieceX, i.pieceY, boardType.Blank, i.state, actionType.Remove, this.count));
+                this.state[i.pieceX, i.pieceY] = boardType.Blank;
+            }
+
             this.records.Add((boardType[,])this.state.Clone());
         }
 
