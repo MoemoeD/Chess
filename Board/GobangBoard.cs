@@ -125,7 +125,7 @@ namespace Board
         /// <summary>
         /// 判断逻辑
         /// </summary>
-        protected override void DoJudgmentLogic()
+        private void DoJudgmentLogic()
         {
             this.winPoints = new List<winPoint>();
             //横向

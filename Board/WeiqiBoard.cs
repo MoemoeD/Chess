@@ -54,7 +54,7 @@ namespace Board
             this.count++;
             this.logs.Add(new log(pieceX, pieceY, boardType, boardType.Blank, actionType.Add, this.count));
 
-            DoJudgmentLogic();
+            DoJudgmentLogic(pieceX, pieceY, boardType);
 
             return true;
         }
@@ -89,9 +89,50 @@ namespace Board
         /// <summary>
         /// 判断逻辑
         /// </summary>
-        protected override void DoJudgmentLogic()
+        private void DoJudgmentLogic(int pieceX, int pieceY, boardType boardType)
         {
+
+
+
             this.records.Add((boardType[,])this.state.Clone());
+        }
+
+        /// <summary>
+        /// 递归判断
+        /// </summary>
+        /// <param name="pieceX"></param>
+        /// <param name="pieceY"></param>
+        /// <param name="boardType"></param>
+        private void CheckPoint(int pieceX, int pieceY, boardType boardType)
+        {
+            for (int X = -1; X <= 1; X++)
+            {
+                for (int Y = -1; Y <= 1; Y++)
+                {
+                    //只剩下上下左右四个位置
+                    if (X != 0 && Y != 0 || X == 0 && Y == 0)
+                        continue;
+                    if (pieceX + X < 0 || pieceX + X >= this.boardX || pieceY + Y < 0 || pieceY + Y >= this.boardY)
+                        continue;
+
+                    if (state[pieceX + X, pieceY + Y] == boardType.Blank)
+                    {
+
+                    }
+                    else if (state[pieceX + X, pieceY + Y] == boardType)
+                    {
+
+                    }
+                    else if (state[pieceX + X, pieceY + Y] != boardType)
+                    {
+
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
         }
     }
 }

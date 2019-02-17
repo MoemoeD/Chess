@@ -165,11 +165,6 @@ namespace Board
         public abstract void DrawBoard(Form form);
 
         /// <summary>
-        /// 判断逻辑
-        /// </summary>
-        protected abstract void DoJudgmentLogic();
-
-        /// <summary>
         /// 获得棋盘点的具体坐标
         /// </summary>
         /// <param name="X"></param>
