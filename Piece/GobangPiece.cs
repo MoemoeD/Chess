@@ -84,10 +84,12 @@ namespace Piece
         public override void DrawPiece(Form form)
         {
             //暂时通过是否拥有状态来判断是否初始化成功
-            if (this.state != BaseBoard.boardType.Blank)
+            if (this.state == BaseBoard.boardType.Blank)
             {
-                DrawSetPiece(form, gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
+                return;
             }
+
+            DrawSetPiece(form, gobangBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
 
             foreach (var p in gobangBoard.winPoints)
             {

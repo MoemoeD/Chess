@@ -19,7 +19,7 @@ namespace Board
         /// <summary>
         /// 间隙
         /// </summary>
-        public int gapPixel { get; set; }
+        protected int gapPixel { get; set; }
 
         /// <summary>
         /// 棋盘基准坐标X

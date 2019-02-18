@@ -1,5 +1,6 @@
 ﻿using Board;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -78,14 +79,16 @@ namespace Piece
         public override void DrawPiece(Form form)
         {
             //暂时通过是否拥有状态来判断是否初始化成功
-            if (this.state != BaseBoard.boardType.Blank)
+            if (this.state == BaseBoard.boardType.Blank)
             {
-                DrawSetPiece(form, weiqiBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
+                return;
             }
+
+            DrawSetPiece(form, weiqiBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
 
             foreach (var p in weiqiBoard.changePoints)
             {
-                DrawRemovePiece(form, weiqiBoard.GetRealPointByBoardPoint(p.pieceX, p.pieceY), weiqiBoard.gapPixel, weiqiBoard.mainColor, weiqiBoard.bgColor);
+                DrawRemovePiece(form, weiqiBoard.GetRemovePieceRect(p.pieceX, p.pieceY), weiqiBoard.GetRemovePieceLines(p.pieceX, p.pieceY), weiqiBoard.mainColor, weiqiBoard.bgColor);
             }
         }
 
@@ -116,23 +119,19 @@ namespace Piece
         /// <param name="gapPixel"></param>
         /// <param name="mainColor"></param>
         /// <param name="bgColor"></param>
-        private void DrawRemovePiece(Form form, Point point, int gapPixel, Color mainColor, Color bgColor)
+        private void DrawRemovePiece(Form form, Rectangle rect, List<Board.WeiqiBoard.line> lines, Color mainColor, Color bgColor)
         {
-            int halfGapPixel = Convert.ToInt32(0.5 * gapPixel);
-
             Pen pen = new Pen(mainColor);
 
             Graphics graphics = form.CreateGraphics();
 
             SolidBrush brush = new SolidBrush(bgColor);
-            graphics.FillRectangle(brush, point.X - halfGapPixel, point.Y - halfGapPixel, gapPixel, gapPixel);
+            graphics.FillRectangle(brush, rect);
 
-            Point a = new Point(point.X - halfGapPixel, point.Y);
-            Point b = new Point(point.X + halfGapPixel, point.Y);
-            graphics.DrawLine(pen, a, b);
-            Point c = new Point(point.X, point.Y - halfGapPixel);
-            Point d = new Point(point.X, point.Y + halfGapPixel);
-            graphics.DrawLine(pen, c, d);
+            foreach (var line in lines)
+            {
+                graphics.DrawLine(pen, line.p1, line.p2);
+            }
 
             graphics.Dispose();
         }

@@ -1,13 +1,6 @@
 ﻿using Board;
 using Piece;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Chess
@@ -23,7 +16,7 @@ namespace Chess
         {
             try
             {
-                WeiqiBoard board = WeiqiBoard.Instance();
+                BaseBoard board = WeiqiBoard.Instance();
                 board.DrawBoard(this);
             }
             catch (Exception ex)
@@ -41,7 +34,7 @@ namespace Chess
                     return;
                 }
 
-                WeiqiPiece piece = new WeiqiPiece(e.X, e.Y);
+                BasePiece piece = new WeiqiPiece(e.X, e.Y);
                 piece.DrawPiece(this);
             }
             catch (Exception ex)

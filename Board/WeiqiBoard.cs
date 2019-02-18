@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -128,6 +129,52 @@ namespace Board
             }
 
             graphics.Dispose();
+        }
+
+        public class line
+        {
+            public Point p1 { get; set; }
+
+            public Point p2 { get; set; }
+
+            public line(Point p1, Point p2)
+            {
+                this.p1 = p1;
+                this.p2 = p2;
+            }
+        }
+
+        /// <summary>
+        /// 获取移除棋子后的线
+        /// </summary>
+        /// <param name="pieceX"></param>
+        /// <param name="pieceY"></param>
+        /// <returns></returns>
+        public List<line> GetRemovePieceLines(int pieceX, int pieceY)
+        {
+            int halfGapPixel = Convert.ToInt32(0.5 * this.gapPixel);
+
+            Point p = GetRealPointByBoardPoint(pieceX, pieceY);
+
+            line l1 = new line(new Point(pieceX == 0 ? p.X : p.X - halfGapPixel, p.Y), new Point(pieceX == this.boardX - 1 ? p.X : p.X + halfGapPixel, p.Y));
+            line l2 = new line(new Point(p.X, pieceY == 0 ? p.Y : p.Y - halfGapPixel), new Point(p.X, pieceY == this.boardY - 1 ? p.Y : p.Y + halfGapPixel));
+
+            return new List<line>() { l1, l2 };
+        }
+
+        /// <summary>
+        /// 获取移除棋子覆盖的长方形
+        /// </summary>
+        /// <param name="pieceX"></param>
+        /// <param name="pieceY"></param>
+        /// <returns></returns>
+        public Rectangle GetRemovePieceRect(int pieceX, int pieceY)
+        {
+            int halfGapPixel = Convert.ToInt32(0.5 * this.gapPixel);
+
+            Point p = GetRealPointByBoardPoint(pieceX, pieceY);
+
+            return new Rectangle(p.X - halfGapPixel, p.Y - halfGapPixel, gapPixel, gapPixel);
         }
 
         /// <summary>
