@@ -88,7 +88,7 @@ namespace Piece
 
             foreach (var p in weiqiBoard.changePoints)
             {
-                DrawRemovePiece(form, weiqiBoard.GetRemovePieceRect(p.pieceX, p.pieceY), weiqiBoard.GetRemovePieceLines(p.pieceX, p.pieceY), weiqiBoard.mainColor, weiqiBoard.bgColor);
+                DrawRemovePiece(form, weiqiBoard.GetRemovePieceRect(p.pieceX, p.pieceY), weiqiBoard.GetRemovePieceLines(p.pieceX, p.pieceY), weiqiBoard.GetMainColor(), weiqiBoard.GetBgColor());
             }
         }
 

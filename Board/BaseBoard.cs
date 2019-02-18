@@ -34,12 +34,12 @@ namespace Board
         /// <summary>
         /// 棋盘颜色
         /// </summary>
-        public Color mainColor { get; set; }
+        protected Color mainColor { get; set; }
 
         /// <summary>
         /// 棋盘背景颜色
         /// </summary>
-        public Color bgColor { get; set; }
+        protected Color bgColor { get; set; }
 
         /// <summary>
         /// 棋盘点位状态
@@ -203,6 +203,16 @@ namespace Board
             }
 
             return true;
+        }
+
+        public Color GetMainColor()
+        {
+            return this.mainColor;
+        }
+
+        public Color GetBgColor()
+        {
+            return this.bgColor;
         }
     }
 }
