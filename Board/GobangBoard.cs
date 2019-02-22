@@ -67,65 +67,12 @@ namespace Board
         }
 
         /// <summary>
-        /// 下棋
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public override bool SetState(int pieceX, int pieceY, boardType boardType)
-        {
-            //已被占用返回false
-            if (this.state[pieceX, pieceY] != boardType.Blank)
-            {
-                return false;
-            }
-
-            //如有获胜状态，游戏结束
-            if (this.logs.Where(o => o.action == actionType.Victory).Count() > 0)
-            {
-                return false;
-            }
-
-            this.state[pieceX, pieceY] = boardType;
-            this.count++;
-            this.logs.Add(new log(pieceX, pieceY, boardType, boardType.Blank, actionType.Add, this.count));
-
-            DoJudgmentLogic();
-
-            return true;
-        }
-
-        /// <summary>
-        /// 绘制棋盘
-        /// </summary>
-        /// <param name="form"></param>
-        public override void DrawBoard(Form form)
-        {
-            Pen pen = new Pen(this.mainColor);
-
-            Graphics graphics = form.CreateGraphics();
-            graphics.Clear(this.bgColor);
-
-            for (int i = 0; i < this.boardX; i++)
-            {
-                Point a = this.GetRealPointByBoardPoint(i, 0);
-                Point b = this.GetRealPointByBoardPoint(i, this.boardY - 1);
-                graphics.DrawLine(pen, a, b);
-            }
-            for (int i = 0; i < this.boardY; i++)
-            {
-                Point a = this.GetRealPointByBoardPoint(0, i);
-                Point b = this.GetRealPointByBoardPoint(this.boardX - 1, i);
-                graphics.DrawLine(pen, a, b);
-            }
-
-            graphics.Dispose();
-        }
-
-        /// <summary>
         /// 判断逻辑
         /// </summary>
-        private void DoJudgmentLogic()
+        /// <param name="pieceX"></param>
+        /// <param name="pieceY"></param>
+        /// <param name="boardType"></param>
+        protected override void DoJudgmentLogic(int pieceX, int pieceY, boardType boardType)
         {
             this.winPoints = new List<winPoint>();
             //横向
