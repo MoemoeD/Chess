@@ -6,33 +6,16 @@ namespace Board
 {
     public class WeiqiBoard : BaseBoard
     {
-        public class changePoint
+        private class changePoint : pendingPoint
         {
-            /// <summary>
-            /// X
-            /// </summary>
-            public int pieceX { get; set; }
-
-            /// <summary>
-            /// Y
-            /// </summary>
-            public int pieceY { get; set; }
-
-            /// <summary>
-            /// 点位状态
-            /// </summary>
-            public boardType state { get; set; }
-
             /// <summary>
             /// 有几口气
             /// </summary>
             internal int life { get; set; }
 
-            public changePoint(int pieceX, int pieceY, boardType state)
+            internal changePoint(int pieceX, int pieceY, boardType state)
+                : base(pieceX, pieceY, state)
             {
-                this.pieceX = pieceX;
-                this.pieceY = pieceY;
-                this.state = state;
                 this.life = 0;
             }
 
@@ -76,7 +59,9 @@ namespace Board
         /// <param name="boardType"></param>
         protected override void DoJudgmentLogic(int pieceX, int pieceY, boardType boardType)
         {
+            //待处理集合
             List<changePoint> changePoints = new List<changePoint>();
+            //上下左右相同棋子集合
             List<changePoint> equalPoints = new List<changePoint>();
 
             changePoint pOriginal = new changePoint(pieceX, pieceY, boardType);
@@ -92,14 +77,17 @@ namespace Board
                     if (pieceX + X < 0 || pieceX + X >= this.boardX || pieceY + Y < 0 || pieceY + Y >= this.boardY)
                         continue;
 
+                    //有气
                     if (state[pieceX + X, pieceY + Y] == boardType.Blank)
                     {
                         pOriginal.setLife();
                     }
+                    //相同棋子则递归看有没有气(相同棋子默认连在一起)
                     else if (state[pieceX + X, pieceY + Y] == boardType)
                     {
                         CheckPoint(pieceX + X, pieceY + Y, state[pieceX + X, pieceY + Y], equalPoints);
                     }
+                    //不同棋子则分开递归看有没有气(不同棋子默认不连在一起)
                     else if (state[pieceX + X, pieceY + Y] != boardType)
                     {
                         List<changePoint> unequalPoints = new List<changePoint>();
@@ -116,15 +104,16 @@ namespace Board
                 }
             }
 
+            //如果没有吃子而且本身没气了那就是自杀
             if (changePoints.Count() == 0 && equalPoints.Where(o => o.life > 0).Count() == 0)
             {
                 changePoints.AddRange(equalPoints);
             }
 
-            foreach (var i in changePoints.GroupBy(o => new { o.pieceX, o.pieceY, o.state }).Select(o => o.First()))
+            foreach (var changePoint in changePoints.GroupBy(o => new { o.pieceX, o.pieceY, o.state }).Select(o => o.First()))
             {
-                this.logs.Add(new log(i.pieceX, i.pieceY, boardType.Blank, i.state, actionType.Remove, this.count));
-                this.state[i.pieceX, i.pieceY] = boardType.Blank;
+                this.logs.Add(new log(changePoint.pieceX, changePoint.pieceY, boardType.Blank, changePoint.state, actionType.Remove, this.count));
+                this.state[changePoint.pieceX, changePoint.pieceY] = boardType.Blank;
             }
 
             this.records.Add((boardType[,])this.state.Clone());
@@ -154,6 +143,7 @@ namespace Board
                         continue;
                     if (pieceX + X < 0 || pieceX + X >= this.boardX || pieceY + Y < 0 || pieceY + Y >= this.boardY)
                         continue;
+                    //集合里已有了就跳过
                     if (cp.Where(o => o.pieceX == pieceX + X && o.pieceY == pieceY + Y).Count() > 0)
                     {
                         continue;

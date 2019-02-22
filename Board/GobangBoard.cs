@@ -158,12 +158,12 @@ namespace Board
                 }
             }
 
-            this.records.Add((boardType[,])this.state.Clone());
-
             foreach (var winPoint in winPoints)
             {
                 logs.Add(new log(winPoint.pieceX, winPoint.pieceY, winPoint.state, winPoint.state, actionType.Victory, this.count));
             }
+
+            this.records.Add((boardType[,])this.state.Clone());
         }
     }
 }
