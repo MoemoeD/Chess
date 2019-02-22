@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace Board
 {
@@ -143,6 +141,7 @@ namespace Board
         /// <param name="pieceX"></param>
         /// <param name="pieceY"></param>
         /// <param name="boardType"></param>
+        /// <param name="cp"></param>
         private void CheckPoint(int pieceX, int pieceY, boardType boardType, List<changePoint> cp)
         {
             if (cp.Where(o => o.life > 0).Count() > 0)
