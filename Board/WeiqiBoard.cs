@@ -6,11 +6,6 @@ namespace Board
 {
     public class WeiqiBoard : BaseBoard
     {
-        /// <summary>
-        /// 更改集合
-        /// </summary>
-        public List<changePoint> changePoints { get; set; }
-
         public class changePoint
         {
             /// <summary>
@@ -81,7 +76,7 @@ namespace Board
         /// <param name="boardType"></param>
         protected override void DoJudgmentLogic(int pieceX, int pieceY, boardType boardType)
         {
-            this.changePoints = new List<changePoint>();
+            List<changePoint> changePoints = new List<changePoint>();
             List<changePoint> equalPoints = new List<changePoint>();
 
             changePoint pOriginal = new changePoint(pieceX, pieceY, boardType);

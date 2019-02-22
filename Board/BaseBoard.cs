@@ -276,6 +276,34 @@ namespace Board
         #region -处理-
 
         /// <summary>
+        /// 待处理棋子
+        /// </summary>
+        protected class pendingPoint
+        {
+            /// <summary>
+            /// X
+            /// </summary>
+            internal int pieceX { get; set; }
+
+            /// <summary>
+            /// Y
+            /// </summary>
+            internal int pieceY { get; set; }
+
+            /// <summary>
+            /// 点位状态
+            /// </summary>
+            internal boardType state { get; set; }
+
+            internal pendingPoint(int pieceX, int pieceY, boardType state)
+            {
+                this.pieceX = pieceX;
+                this.pieceY = pieceY;
+                this.state = state;
+            }
+        }
+
+        /// <summary>
         /// 下棋
         /// </summary>
         /// <param name="pieceX"></param>
