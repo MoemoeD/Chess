@@ -1,6 +1,5 @@
 ﻿using Board;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -8,10 +7,9 @@ namespace Piece
 {
     public class WeiqiPiece : BasePiece
     {
-        WeiqiBoard weiqiBoard = WeiqiBoard.Instance();
-
         public WeiqiPiece(int pixelx, int pixely)
         {
+            board = WeiqiBoard.Instance();
             this.pieceRadius = 15;
             this.judgeRadius = 15;
             this.pieceFrameColor = Color.Black;
@@ -40,36 +38,13 @@ namespace Piece
             }
 
             //下棋
-            if (!weiqiBoard.SetState(this.pieceX, this.pieceY, this.state))
+            if (!board.SetState(this.pieceX, this.pieceY, this.state))
             {
                 this.state = BaseBoard.boardType.Blank;
                 return;
             }
 
             lastState = this.state;
-        }
-
-        /// <summary>
-        /// 点击坐标转换为棋盘坐标
-        /// </summary>
-        /// <param name="pixelx"></param>
-        /// <param name="pixely"></param>
-        /// <returns></returns>
-        protected override bool ConvertxyToXY(int pixelx, int pixely, out Point Point)
-        {
-            if (!weiqiBoard.GetBoardRangeByRealPoint(pixelx, pixely, out Point))
-            {
-                return false;
-            }
-
-            //超出半径
-            Point point = weiqiBoard.GetRealPointByBoardPoint(Point.X, Point.Y);
-            if (Math.Pow(point.X - pixelx, 2) + Math.Pow(point.Y - pixely, 2) > Math.Pow(this.judgeRadius, 2))
-            {
-                return false;
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -84,56 +59,12 @@ namespace Piece
                 return;
             }
 
-            DrawSetPiece(form, weiqiBoard.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
+            DrawSetPiece(form, board.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
 
-            foreach (var p in weiqiBoard.changePoints)
-            {
-                DrawRemovePiece(form, weiqiBoard.GetRemovePieceRect(p.pieceX, p.pieceY), weiqiBoard.GetRemovePieceLines(p.pieceX, p.pieceY), weiqiBoard.GetMainColor(), weiqiBoard.GetBgColor());
-            }
-        }
-
-        /// <summary>
-        /// 绘制棋子
-        /// </summary>
-        /// <param name="form"></param>
-        /// <param name="point"></param>
-        /// <param name="pieceFrameColor"></param>
-        protected override void DrawSetPiece(Form form, Point point, int pieceRadius, Color pieceColor, Color pieceFrameColor)
-        {
-            Graphics graphics = form.CreateGraphics();
-
-            SolidBrush brush = new SolidBrush(pieceColor);
-            graphics.FillEllipse(brush, point.X - pieceRadius, point.Y - pieceRadius, 2 * pieceRadius, 2 * pieceRadius);
-
-            Pen pen = new Pen(pieceFrameColor);
-            graphics.DrawEllipse(pen, point.X - pieceRadius, point.Y - pieceRadius, 2 * pieceRadius, 2 * pieceRadius);
-
-            graphics.Dispose();
-        }
-
-        /// <summary>
-        /// 移除棋子
-        /// </summary>
-        /// <param name="form"></param>
-        /// <param name="point"></param>
-        /// <param name="gapPixel"></param>
-        /// <param name="mainColor"></param>
-        /// <param name="bgColor"></param>
-        private void DrawRemovePiece(Form form, Rectangle rect, List<Board.WeiqiBoard.line> lines, Color mainColor, Color bgColor)
-        {
-            Pen pen = new Pen(mainColor);
-
-            Graphics graphics = form.CreateGraphics();
-
-            SolidBrush brush = new SolidBrush(bgColor);
-            graphics.FillRectangle(brush, rect);
-
-            foreach (var line in lines)
-            {
-                graphics.DrawLine(pen, line.p1, line.p2);
-            }
-
-            graphics.Dispose();
+            //foreach (var p in board.changePoints)
+            //{
+            //    DrawRemovePiece(form, weiqiBoard.GetRemovePieceRect(p.pieceX, p.pieceY), weiqiBoard.GetRemovePieceLines(p.pieceX, p.pieceY), weiqiBoard.GetMainColor(), weiqiBoard.GetBgColor());
+            //}
         }
     }
 }
