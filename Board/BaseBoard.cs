@@ -136,7 +136,7 @@ namespace Board
 
             public Point p2 { get; set; }
 
-            public line(Point p1, Point p2)
+            internal line(Point p1, Point p2)
             {
                 this.p1 = p1;
                 this.p2 = p2;
@@ -198,22 +198,22 @@ namespace Board
         /// <summary>
         /// 记录
         /// </summary>
-        protected class log
+        public class log
         {
             /// <summary>
             /// X
             /// </summary>
-            internal int pieceX { get; set; }
+            public int pieceX { get; set; }
 
             /// <summary>
             /// Y
             /// </summary>
-            internal int pieceY { get; set; }
+            public int pieceY { get; set; }
 
             /// <summary>
             /// 点位状态
             /// </summary>
-            internal boardType state { get; set; }
+            public boardType state { get; set; }
 
             /// <summary>
             /// 之前点位状态
@@ -223,7 +223,7 @@ namespace Board
             /// <summary>
             /// 行动状态
             /// </summary>
-            internal actionType action { get; set; }
+            public actionType action { get; set; }
 
             /// <summary>
             /// 步数
@@ -244,7 +244,7 @@ namespace Board
         /// <summary>
         /// 行动状态类型
         /// </summary>
-        protected enum actionType
+        public enum actionType
         {
             /// <summary>
             /// 添加
@@ -260,6 +260,15 @@ namespace Board
             /// 获胜
             /// </summary>
             Victory,
+        }
+
+        /// <summary>
+        /// 获取当前步数记录
+        /// </summary>
+        /// <returns></returns>
+        public List<log> GetCurrentLog()
+        {
+            return logs.Where(o => o.count == this.count).ToList();
         }
 
         #endregion

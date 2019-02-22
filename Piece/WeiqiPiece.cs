@@ -1,6 +1,8 @@
 ﻿using Board;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Piece
@@ -59,12 +61,19 @@ namespace Piece
                 return;
             }
 
-            DrawSetPiece(form, board.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
+            List<Board.BaseBoard.log> logs = board.GetCurrentLog().OrderBy(o => o.action).ToList();
+            foreach (var log in logs)
+            {
+                if (log.action == BaseBoard.actionType.Add)
+                {
+                    DrawSetPiece(form, board.GetRealPointByBoardPoint(log.pieceX, log.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), log.state)), this.pieceFrameColor);
+                }
 
-            //foreach (var p in board.changePoints)
-            //{
-            //    DrawRemovePiece(form, weiqiBoard.GetRemovePieceRect(p.pieceX, p.pieceY), weiqiBoard.GetRemovePieceLines(p.pieceX, p.pieceY), weiqiBoard.GetMainColor(), weiqiBoard.GetBgColor());
-            //}
+                if (log.action == BaseBoard.actionType.Remove)
+                {
+                    DrawRemovePiece(form, board.GetRemovePieceRect(log.pieceX, log.pieceY), board.GetRemovePieceLines(log.pieceX, log.pieceY), board.GetMainColor(), board.GetBgColor());
+                }
+            }
         }
     }
 }

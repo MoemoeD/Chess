@@ -1,6 +1,8 @@
 ﻿using Board;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Piece
@@ -65,12 +67,19 @@ namespace Piece
                 return;
             }
 
-            DrawSetPiece(form, board.GetRealPointByBoardPoint(this.pieceX, this.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), this.state)), this.pieceFrameColor);
+            List<Board.BaseBoard.log> logs = board.GetCurrentLog().OrderBy(o => o.action).ToList();
+            foreach (var log in logs)
+            {
+                if (log.action == BaseBoard.actionType.Add)
+                {
+                    DrawSetPiece(form, board.GetRealPointByBoardPoint(log.pieceX, log.pieceY), this.pieceRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), log.state)), this.pieceFrameColor);
+                }
 
-            //foreach (var p in board.winPoints)
-            //{
-            //    DrawSetPiece(form, gobangBoard.GetRealPointByBoardPoint(p.pieceX, p.pieceY), this.pieceWinRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), p.state)), this.pieceFrameColor);
-            //}
+                if (log.action == BaseBoard.actionType.Victory)
+                {
+                    DrawSetPiece(form, board.GetRealPointByBoardPoint(log.pieceX, log.pieceY), this.pieceWinRadius, Color.FromName(Enum.GetName(typeof(BaseBoard.boardType), log.state)), this.pieceFrameColor);
+                }
+            }
         }
     }
 }
